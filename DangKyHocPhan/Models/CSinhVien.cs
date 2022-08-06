@@ -13,7 +13,7 @@ namespace DangKyHocPhan.Models
         private DateTime birth;
         private string address;
         private string country;
-
+        private string concac;
         public string IdSv { get => idSv; set => idSv = value; }
         public string NameSv { get => nameSv; set => nameSv = value; }
         public string Sex { get => sex; set => sex = value; }
