@@ -1,0 +1,522 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="registrion_courseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="account">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="role" Type="int" />
+          <Property Name="student_id" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="department">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="address" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="phone" Type="varchar" MaxLength="11" Nullable="false" />
+        </EntityType>
+        <EntityType Name="regist">
+          <Key>
+            <PropertyRef Name="student_id" />
+            <PropertyRef Name="subject_id" />
+            <PropertyRef Name="table_core_id" />
+          </Key>
+          <Property Name="open_time" Type="datetime" Nullable="false" />
+          <Property Name="close_time" Type="datetime" />
+          <Property Name="regist_time" Type="datetime" Nullable="false" />
+          <Property Name="student_id" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="subject_id" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="table_core_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="student">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="FULLNAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="gender" Type="char" MaxLength="6" />
+          <Property Name="BIRTH" Type="date" Nullable="false" />
+          <Property Name="address" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="phone" Type="varchar" MaxLength="11" Nullable="false" />
+          <Property Name="department_id" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="subject">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="credits" Type="int" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="subject_id" Type="varchar" MaxLength="100" />
+          <Property Name="department_id" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="table_core">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="average_core" Type="float" />
+          <Property Name="mid_core" Type="float" />
+          <Property Name="end_core" Type="float" />
+        </EntityType>
+        <Association Name="FK__account__student__2E1BDC42">
+          <End Role="student" Type="Self.student" Multiplicity="0..1" />
+          <End Role="account" Type="Self.account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="student">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="account">
+              <PropertyRef Name="student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__regist__student___37A5467C">
+          <End Role="student" Type="Self.student" Multiplicity="1" />
+          <End Role="regist" Type="Self.regist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="student">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="regist">
+              <PropertyRef Name="student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__regist__subject___38996AB5">
+          <End Role="subject" Type="Self.subject" Multiplicity="1" />
+          <End Role="regist" Type="Self.regist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subject">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="regist">
+              <PropertyRef Name="subject_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__regist__table_co__398D8EEE">
+          <End Role="table_core" Type="Self.table_core" Multiplicity="1" />
+          <End Role="regist" Type="Self.regist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="table_core">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="regist">
+              <PropertyRef Name="table_core_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__student__departm__2A4B4B5E">
+          <End Role="department" Type="Self.department" Multiplicity="0..1" />
+          <End Role="student" Type="Self.student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="department">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="student">
+              <PropertyRef Name="department_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__subject__departm__32E0915F">
+          <End Role="department" Type="Self.department" Multiplicity="0..1" />
+          <End Role="subject" Type="Self.subject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="department">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="subject">
+              <PropertyRef Name="department_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__subject__subject__31EC6D26">
+          <End Role="subject" Type="Self.subject" Multiplicity="0..1" />
+          <End Role="subject1" Type="Self.subject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subject">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="subject1">
+              <PropertyRef Name="subject_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="registrion_courseModelStoreContainer">
+          <EntitySet Name="account" EntityType="Self.account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="department" EntityType="Self.department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="regist" EntityType="Self.regist" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="student" EntityType="Self.student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="subject" EntityType="Self.subject" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="table_core" EntityType="Self.table_core" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__account__student__2E1BDC42" Association="Self.FK__account__student__2E1BDC42">
+            <End Role="student" EntitySet="student" />
+            <End Role="account" EntitySet="account" />
+          </AssociationSet>
+          <AssociationSet Name="FK__regist__student___37A5467C" Association="Self.FK__regist__student___37A5467C">
+            <End Role="student" EntitySet="student" />
+            <End Role="regist" EntitySet="regist" />
+          </AssociationSet>
+          <AssociationSet Name="FK__regist__subject___38996AB5" Association="Self.FK__regist__subject___38996AB5">
+            <End Role="subject" EntitySet="subject" />
+            <End Role="regist" EntitySet="regist" />
+          </AssociationSet>
+          <AssociationSet Name="FK__regist__table_co__398D8EEE" Association="Self.FK__regist__table_co__398D8EEE">
+            <End Role="table_core" EntitySet="table_core" />
+            <End Role="regist" EntitySet="regist" />
+          </AssociationSet>
+          <AssociationSet Name="FK__student__departm__2A4B4B5E" Association="Self.FK__student__departm__2A4B4B5E">
+            <End Role="department" EntitySet="department" />
+            <End Role="student" EntitySet="student" />
+          </AssociationSet>
+          <AssociationSet Name="FK__subject__departm__32E0915F" Association="Self.FK__subject__departm__32E0915F">
+            <End Role="department" EntitySet="department" />
+            <End Role="subject" EntitySet="subject" />
+          </AssociationSet>
+          <AssociationSet Name="FK__subject__subject__31EC6D26" Association="Self.FK__subject__subject__31EC6D26">
+            <End Role="subject" EntitySet="subject" />
+            <End Role="subject1" EntitySet="subject" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="registrion_courseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="account">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="role" Type="Int32" />
+          <Property Name="student_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="student" Relationship="Self.FK__account__student__2E1BDC42" FromRole="account" ToRole="student" />
+        </EntityType>
+        <EntityType Name="department">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="phone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="student" Relationship="Self.FK__student__departm__2A4B4B5E" FromRole="department" ToRole="student" />
+          <NavigationProperty Name="subject" Relationship="Self.FK__subject__departm__32E0915F" FromRole="department" ToRole="subject" />
+        </EntityType>
+        <EntityType Name="regist">
+          <Key>
+            <PropertyRef Name="student_id" />
+            <PropertyRef Name="subject_id" />
+            <PropertyRef Name="table_core_id" />
+          </Key>
+          <Property Name="open_time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="close_time" Type="DateTime" Precision="3" />
+          <Property Name="regist_time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="student_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="subject_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="table_core_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="student" Relationship="Self.FK__regist__student___37A5467C" FromRole="regist" ToRole="student" />
+          <NavigationProperty Name="subject" Relationship="Self.FK__regist__subject___38996AB5" FromRole="regist" ToRole="subject" />
+          <NavigationProperty Name="table_core" Relationship="Self.FK__regist__table_co__398D8EEE" FromRole="regist" ToRole="table_core" />
+        </EntityType>
+        <EntityType Name="student">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FULLNAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="gender" Type="String" MaxLength="6" FixedLength="true" Unicode="false" />
+          <Property Name="BIRTH" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="address" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="phone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="department_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="account" Relationship="Self.FK__account__student__2E1BDC42" FromRole="student" ToRole="account" />
+          <NavigationProperty Name="department" Relationship="Self.FK__student__departm__2A4B4B5E" FromRole="student" ToRole="department" />
+          <NavigationProperty Name="regist" Relationship="Self.FK__regist__student___37A5467C" FromRole="student" ToRole="regist" />
+        </EntityType>
+        <EntityType Name="subject">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="credits" Type="Int32" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="subject_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="department_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="department" Relationship="Self.FK__subject__departm__32E0915F" FromRole="subject" ToRole="department" />
+          <NavigationProperty Name="regist" Relationship="Self.FK__regist__subject___38996AB5" FromRole="subject" ToRole="regist" />
+          <NavigationProperty Name="subject1" Relationship="Self.FK__subject__subject__31EC6D26" FromRole="subject" ToRole="subject1" />
+          <NavigationProperty Name="subject2" Relationship="Self.FK__subject__subject__31EC6D26" FromRole="subject1" ToRole="subject" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="table_core">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="average_core" Type="Double" />
+          <Property Name="mid_core" Type="Double" />
+          <Property Name="end_core" Type="Double" />
+          <NavigationProperty Name="regist" Relationship="Self.FK__regist__table_co__398D8EEE" FromRole="table_core" ToRole="regist" />
+        </EntityType>
+        <Association Name="FK__account__student__2E1BDC42">
+          <End Role="student" Type="Self.student" Multiplicity="0..1" />
+          <End Role="account" Type="Self.account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="student">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="account">
+              <PropertyRef Name="student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__student__departm__2A4B4B5E">
+          <End Role="department" Type="Self.department" Multiplicity="0..1" />
+          <End Role="student" Type="Self.student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="department">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="student">
+              <PropertyRef Name="department_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__subject__departm__32E0915F">
+          <End Role="department" Type="Self.department" Multiplicity="0..1" />
+          <End Role="subject" Type="Self.subject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="department">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="subject">
+              <PropertyRef Name="department_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__regist__student___37A5467C">
+          <End Role="student" Type="Self.student" Multiplicity="1" />
+          <End Role="regist" Type="Self.regist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="student">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="regist">
+              <PropertyRef Name="student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__regist__subject___38996AB5">
+          <End Role="subject" Type="Self.subject" Multiplicity="1" />
+          <End Role="regist" Type="Self.regist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subject">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="regist">
+              <PropertyRef Name="subject_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__regist__table_co__398D8EEE">
+          <End Role="table_core" Type="Self.table_core" Multiplicity="1" />
+          <End Role="regist" Type="Self.regist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="table_core">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="regist">
+              <PropertyRef Name="table_core_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__subject__subject__31EC6D26">
+          <End Role="subject" Type="Self.subject" Multiplicity="0..1" />
+          <End Role="subject1" Type="Self.subject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subject">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="subject1">
+              <PropertyRef Name="subject_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="registrion_courseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="account" EntityType="Self.account" />
+          <EntitySet Name="department" EntityType="Self.department" />
+          <EntitySet Name="regist" EntityType="Self.regist" />
+          <EntitySet Name="student" EntityType="Self.student" />
+          <EntitySet Name="subject" EntityType="Self.subject" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="table_core" EntityType="Self.table_core" />
+          <AssociationSet Name="FK__account__student__2E1BDC42" Association="Self.FK__account__student__2E1BDC42">
+            <End Role="student" EntitySet="student" />
+            <End Role="account" EntitySet="account" />
+          </AssociationSet>
+          <AssociationSet Name="FK__student__departm__2A4B4B5E" Association="Self.FK__student__departm__2A4B4B5E">
+            <End Role="department" EntitySet="department" />
+            <End Role="student" EntitySet="student" />
+          </AssociationSet>
+          <AssociationSet Name="FK__subject__departm__32E0915F" Association="Self.FK__subject__departm__32E0915F">
+            <End Role="department" EntitySet="department" />
+            <End Role="subject" EntitySet="subject" />
+          </AssociationSet>
+          <AssociationSet Name="FK__regist__student___37A5467C" Association="Self.FK__regist__student___37A5467C">
+            <End Role="student" EntitySet="student" />
+            <End Role="regist" EntitySet="regist" />
+          </AssociationSet>
+          <AssociationSet Name="FK__regist__subject___38996AB5" Association="Self.FK__regist__subject___38996AB5">
+            <End Role="subject" EntitySet="subject" />
+            <End Role="regist" EntitySet="regist" />
+          </AssociationSet>
+          <AssociationSet Name="FK__regist__table_co__398D8EEE" Association="Self.FK__regist__table_co__398D8EEE">
+            <End Role="table_core" EntitySet="table_core" />
+            <End Role="regist" EntitySet="regist" />
+          </AssociationSet>
+          <AssociationSet Name="FK__subject__subject__31EC6D26" Association="Self.FK__subject__subject__31EC6D26">
+            <End Role="subject" EntitySet="subject" />
+            <End Role="subject1" EntitySet="subject" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="registrion_courseModelStoreContainer" CdmEntityContainer="registrion_courseEntities">
+          <EntitySetMapping Name="account">
+            <EntityTypeMapping TypeName="registrion_courseModel.account">
+              <MappingFragment StoreEntitySet="account">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="role" ColumnName="role" />
+                <ScalarProperty Name="student_id" ColumnName="student_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="department">
+            <EntityTypeMapping TypeName="registrion_courseModel.department">
+              <MappingFragment StoreEntitySet="department">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="regist">
+            <EntityTypeMapping TypeName="registrion_courseModel.regist">
+              <MappingFragment StoreEntitySet="regist">
+                <ScalarProperty Name="open_time" ColumnName="open_time" />
+                <ScalarProperty Name="close_time" ColumnName="close_time" />
+                <ScalarProperty Name="regist_time" ColumnName="regist_time" />
+                <ScalarProperty Name="student_id" ColumnName="student_id" />
+                <ScalarProperty Name="subject_id" ColumnName="subject_id" />
+                <ScalarProperty Name="table_core_id" ColumnName="table_core_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="student">
+            <EntityTypeMapping TypeName="registrion_courseModel.student">
+              <MappingFragment StoreEntitySet="student">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="FULLNAME" ColumnName="FULLNAME" />
+                <ScalarProperty Name="gender" ColumnName="gender" />
+                <ScalarProperty Name="BIRTH" ColumnName="BIRTH" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="department_id" ColumnName="department_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subject">
+            <EntityTypeMapping TypeName="registrion_courseModel.subject">
+              <MappingFragment StoreEntitySet="subject">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="credits" ColumnName="credits" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="subject_id" ColumnName="subject_id" />
+                <ScalarProperty Name="department_id" ColumnName="department_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="registrion_courseModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="table_core">
+            <EntityTypeMapping TypeName="registrion_courseModel.table_core">
+              <MappingFragment StoreEntitySet="table_core">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="average_core" ColumnName="average_core" />
+                <ScalarProperty Name="mid_core" ColumnName="mid_core" />
+                <ScalarProperty Name="end_core" ColumnName="end_core" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
